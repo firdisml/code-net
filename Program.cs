@@ -14,7 +14,6 @@ builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

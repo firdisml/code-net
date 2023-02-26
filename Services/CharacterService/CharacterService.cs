@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using code_net.Data;
 using code_net.DataTransferObjects.Character;
 using code_net.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace code_net.Services.CharacterService
 {
@@ -12,10 +14,12 @@ namespace code_net.Services.CharacterService
     {
 
         private readonly IMapper mapper;
-        public CharacterService(IMapper mapper)
+        private readonly DataContext context;
+        public CharacterService(IMapper mapper, DataContext context)
         {
             this.mapper = mapper;
-        }
+            this.context = context;
+        }   
 
         private static List<Character> characters = new List<Character>{
             new Character(),
@@ -25,15 +29,17 @@ namespace code_net.Services.CharacterService
         public async Task<ServiceResponse<GetCharacterDTO>> AddCharacter(AddCharacterDTO character)
         {
             var serviceResponse = new ServiceResponse<GetCharacterDTO>();
-            characters.Add(mapper.Map<Character>(character));
+            context.Characters.Add(mapper.Map<Character>(character));
             serviceResponse.Data = mapper.Map<GetCharacterDTO>(character);
+            context.SaveChanges();
             return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<GetCharacterDTO>>> GetAll()
         {
             var serviceResponse = new ServiceResponse<List<GetCharacterDTO>>();
-            serviceResponse.Data = characters.Select(c => mapper.Map<GetCharacterDTO>(c)).ToList();
+            var db_characters = await context.Characters.ToListAsync();
+            serviceResponse.Data = db_characters.Select(c => mapper.Map<GetCharacterDTO>(c)).ToList();
             return serviceResponse;
         }
 
