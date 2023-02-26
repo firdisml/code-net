@@ -1,4 +1,6 @@
+using code_net.Data;
 using code_net.Services.CharacterService;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 
 var app = builder.Build();
