@@ -48,5 +48,62 @@ namespace code_net.Services.CharacterService
             return serviceResponse;
 
         }
+
+        public async Task<ServiceResponse<GetCharacterDTO>> UpdateCharacter(UpdateCharacterDTO update)
+        {
+            var serviceResponse = new ServiceResponse<GetCharacterDTO>();
+
+            try
+            {
+
+                var character = characters.FirstOrDefault(c => c.Id == update.Id);
+                
+                if(character is null)
+                {
+                    throw new Exception($"Character not found");
+                }
+
+                var map = mapper.Map(update, character);
+
+                serviceResponse.Data = mapper.Map<GetCharacterDTO>(map);
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;                
+            }
+
+            return serviceResponse;
+
+        }
+
+        public async Task<ServiceResponse<GetCharacterDTO>> DeleteCharacter(DeleteCharacterDTO delete)
+        {
+            var serviceResponse = new ServiceResponse<GetCharacterDTO>();
+
+            try
+            {
+
+                var character = characters.FirstOrDefault(c => c.Id == delete.Id);
+                
+                if(character is null)
+                {
+                    throw new Exception($"Character not found");
+                }
+
+                characters.Remove(character);
+
+                serviceResponse.Data = mapper.Map<GetCharacterDTO>(character);
+
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;                
+            }
+
+            return serviceResponse;
+        }
     }
 }

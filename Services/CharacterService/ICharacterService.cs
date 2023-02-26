@@ -14,5 +14,9 @@ namespace code_net.Services.CharacterService
         Task<ServiceResponse<GetCharacterDTO>> GetUnique(int id);
 
         Task<ServiceResponse<GetCharacterDTO>> AddCharacter(AddCharacterDTO character);
+
+        Task<ServiceResponse<GetCharacterDTO>> UpdateCharacter(UpdateCharacterDTO update);
+
+        Task<ServiceResponse<GetCharacterDTO>> DeleteCharacter(DeleteCharacterDTO update);
     }
 }

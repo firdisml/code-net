@@ -15,6 +15,7 @@ namespace code_net
             CreateMap<Character, GetCharacterDTO>();
             CreateMap<AddCharacterDTO, Character>();
             CreateMap<AddCharacterDTO, GetCharacterDTO>();
+            CreateMap<UpdateCharacterDTO, Character>();
         }
     }
 }
